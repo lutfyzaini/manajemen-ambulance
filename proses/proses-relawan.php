@@ -2,7 +2,7 @@
 
 require_once (__DIR__.'/../config/koneksi.php');
 
-class relawan {
+class pasien {
     private $db;
     public function __construct(){
         $database = new database();
@@ -10,7 +10,7 @@ class relawan {
     } 
 
     public function tambah($nama, $jenis_kelamin, $no_hp, $alamat){
-        $sql = "INSERT INTO relawan(nama_relawan, jenis_kelamin, no_hp, alamat) values ('$nama', '$jenis_kelamin', '$no_hp','$alamat')";
+        $sql = "INSERT INTO relawan(nama_relawan , jenis_kelamin, no_hp, alamat) values ('$nama', '$jenis_kelamin', '$no_hp','$alamat')";
 
         error_log("SQL : ". $sql);
         return mysqli_query($this->db, $sql);

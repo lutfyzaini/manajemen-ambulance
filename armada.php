@@ -15,7 +15,7 @@
     if(isset($_GET['edit'])){
         $id = $_GET['edit'];
         $editData = $armada->cari($id);
-        var_dump($editData);
+        // var_dump($editData);
     } 
     if(isset($_POST['edit'])){
        $armada->edit($_POST['id_armada'],$_POST['nama'],$_POST['plat'],$_POST['status']);
