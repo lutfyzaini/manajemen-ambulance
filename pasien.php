@@ -1,16 +1,15 @@
 <?php
 
-    require_once (__DIR__.'\proses\proses-relawan.php');
+    require_once (__DIR__.'\proses\proses-pasien.php');
     $pasien = new pasien();
 
     if(isset($_POST['simpan'])){
         $pasien->tambah($_POST['nama'],$_POST['jenis_kelamin'],$_POST['umur'],$_POST['alamat'], $_POST['keterangan'] );
 
         // var_dump($result);
-        // var_dump($_POST['jenis_kelamin']);
         header("location:pasien.php");
     }
-
+    
     $editData = NULL;
     if(isset($_GET['edit'])){
         $id = $_GET['edit'];
@@ -18,7 +17,8 @@
         // var_dump($editData);
     } 
     if(isset($_POST['edit'])){
-       $pasien->edit($_POST['id_pasien'],$_POST['nama'],$_POST['jenis_kelamin'],$_POST['umur'],$_POST['alamat'], $_POST['keterangan'] );
+        // var_dump($_POST['jenis_kelamin']);
+       $pasien->edit($_POST['id_pasien'],$_POST['nama'],$_POST['jk'],$_POST['umur'],$_POST['alamat'], $_POST['keterangan'] );
        header('location:pasien.php');
         // var_dump($editData);
     } 
@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-    <h2 style="text-align: center;">DATA RELAWAN</h2>        <a href="index.php">Kembali</a>
+    <h2 style="text-align: center;">DATA pasien</h2>        <a href="index.php">Kembali</a>
 
 
     <!-- Form Input -->
@@ -66,24 +66,27 @@
         <!-- Edit -->
         <?php if($editData){ ?>
             <h2 style="text-align : center;">Edit Data</h2>
-        <form method="post" action="relawan.php">
-            <input type="hidden" name="id_relawan" value="<?= $editData['id_relawan'];?>">
+        <form method="post" action="pasien.php">
+            <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien'];?>">
  
-            <label>Nama Relawan:</label>
-            <input type="text" name="nama" value="<?=$editData ['nama_relawan']?>" required><br><br>
+            <label>Nama pasien:</label>
+            <input type="text" name="nama" value="<?=$editData ['nama_pasien']?>" required><br><br>
             
             <label>Jenis Kelamin:</label>
             <input type="radio" name="jk"  value="Laki-laki"  <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki 
             <input type="radio" name="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
             
-            <label>No. HP:</label>
-            <input type="text" name="no_hp" required value="<?= $editData['no_hp']?>"><br><br>
+            <label>Umur:</label>
+            <input type="text" name="umur" required value="<?= $editData['umur']?>"><br><br>
             
             <label>Alamat:</label>
             <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
             
+            <label>Keterangan:</label>
+            <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
+            
             <input type="submit" name="edit" value="Update data"> |
-            <a href="relawan.php">Batal</a>
+            <a href="pasien.php">Batal</a>
         </form>
 
         <?php }else{  ?>
@@ -91,18 +94,21 @@
         <form method="post">
         <h2 style="text-align : center;">Tambah Data</h2>
 
-            <label>Nama Relawan:</label>
+            <label>Nama pasien:</label>
             <input type="text" name="nama" required><br><br>
             
             <label>Jenis Kelamin:</label>
-            <input type="radio" name="jenis_kelamin" value="Laki-laki" required> Laki-laki
+            <input type="radio" name="jenis_kelamin" value="Laki-laki"> Laki-laki
             <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan<br><br>
             
-            <label>No. HP:</label>
-            <input type="text" name="no_hp" required><br><br>
+            <label>Umur :</label>
+            <input type="text" name="umur" required><br><br>
             
-            <label>Alamat:</label>
+            <label>Alamat :</label>
             <input type="text" name="alamat" required><br><br>
+            
+            <label>Keterangan :</label>
+            <input type="text" name="keterangan" required><br><br>
             
             <input type="submit" name="simpan" value="Simpan">
             
@@ -114,27 +120,29 @@
     <table>
         <tr>
             <th>No</th>
-            <th>Nama Relawan</th>
+            <th>Nama pasien</th>
             <th>Jenis Kelamin</th>
             <th>No. HP</th>
             <th>Alamat</th>
+            <th>Keterangan</th>
             <th>Aksi</th>
         </tr>
         
         <?php
         $no = 1;
         ;
-        foreach($relawan ->tampil() as $data) {
+        foreach($pasien ->tampil() as $data) {
         ?>
         <tr>
-            <td><?php echo $data['id_relawan']; ?></td>
-            <td><?php echo $data['nama_relawan']; ?></td>
+            <td><?php echo $data['id_pasien']; ?></td>
+            <td><?php echo $data['nama_pasien']; ?></td>
             <td><?php echo $data['jenis_kelamin']; ?></td>
-            <td><?php echo $data['no_hp']; ?></td>
+            <td><?php echo $data['umur']; ?></td>
             <td><?php echo $data['alamat']; ?></td>
+            <td><?php echo $data['keterangan']; ?></td>
             <td>
-                <a href="?edit=<?php echo $data['id_relawan']; ?>">Edit</a> | 
-                <a href="?hapus=<?php echo $data['id_relawan']; ?> "onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                <a href="?edit=<?php echo $data['id_pasien']; ?>">Edit</a> | 
+                <a href="?hapus=<?php echo $data['id_pasien']; ?> "onclick="return confirm('Yakin hapus data?')">Hapus</a>
             </td>
         </tr>
         <?php } ?>

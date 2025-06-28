@@ -2,7 +2,7 @@
 
 require_once (__DIR__.'/../config/koneksi.php');
 
-class pasien {
+class relawan {
     private $db;
     public function __construct(){
         $database = new database();

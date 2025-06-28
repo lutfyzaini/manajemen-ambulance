@@ -2,15 +2,15 @@
 
 require_once (__DIR__.'/../config/koneksi.php');
 
-class relawan {
+class pasien {
     private $db;
     public function __construct(){
         $database = new database();
         $this->db = $database->connect;
     } 
 
-    public function tambah($nama, $jenis_kelamin, $no_hp, $alamat){
-        $sql = "INSERT INTO relawan(nama_pasien, jenis_kelamin, umur, alamat, keterangan) values ('$nama', '$jenis_kelamin', '$umur','$alamat', '$keterangan')";
+    public function tambah($nama, $jenis_kelamin, $umur, $alamat, $keterangan){
+        $sql = "INSERT INTO pasien(nama_pasien, jenis_kelamin, umur, alamat, keterangan) values ('$nama', '$jenis_kelamin', '$umur','$alamat', '$keterangan')";
 
         error_log("SQL : ". $sql);
         return mysqli_query($this->db, $sql);
@@ -23,17 +23,17 @@ class relawan {
 
     public function edit($id, $nama, $jk, $umur, $alamat, $keterangan) {
         $sql = "UPDATE pasien SET 
-                nama_relawan = '$nama', 
+                nama_pasien = '$nama', 
                 jenis_kelamin = '$jk', 
                 umur = '$umur', 
                 alamat = '$alamat',
-                keterangan = '$keterangan',
+                keterangan = '$keterangan'
                 WHERE id_pasien = $id";
         return mysqli_query($this->db, $sql);
     }
     
     public function cari($id){
-        $data = mysqli_query($this->db,"SELECT * FROM pasien WHERE id_relawan = '$id'");
+        $data = mysqli_query($this->db,"SELECT * FROM pasien WHERE id_pasien = '$id'");
         return mysqli_fetch_assoc($data);
     }
 
