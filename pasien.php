@@ -4,7 +4,7 @@
     $pasien = new pasien();
 
     if(isset($_POST['simpan'])){
-        $pasien->tambah($_POST['nama'],$_POST['jenis_kelamin'],$_POST['umur'],$_POST['alamat'], $_POST['keterangan'] );
+        $pasien->tambah($_POST['nama'],$_POST['jenis_kelamin'],$_POST['umur'],$_POST['alamat'], $_POST['no_hp'],$_POST['keterangan'] );
 
         // var_dump($result);
         header("location:pasien.php");
@@ -18,7 +18,7 @@
     } 
     if(isset($_POST['edit'])){
         // var_dump($_POST['jenis_kelamin']);
-       $pasien->edit($_POST['id_pasien'],$_POST['nama'],$_POST['jk'],$_POST['umur'],$_POST['alamat'], $_POST['keterangan'] );
+       $pasien->edit($_POST['id_pasien'],$_POST['nama'],$_POST['jk'],$_POST['umur'],$_POST['alamat'], $_POST['no_hp'],$_POST['keterangan'] );
        header('location:pasien.php');
         // var_dump($editData);
     } 
@@ -81,6 +81,9 @@
             
             <label>Alamat:</label>
             <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
+
+            <label>No. HP:</label>
+            <input type="text" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
             
             <label>Keterangan:</label>
             <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
@@ -105,7 +108,10 @@
             <input type="text" name="umur" required><br><br>
             
             <label>Alamat :</label>
-            <input type="text" name="alamat" required><br><br>
+            <input type="text" name="alamat" required><br><br>            
+            
+            <label>No. HP:</label>
+            <input type="text" name="no_hp" required><br><br>
             
             <label>Keterangan :</label>
             <input type="text" name="keterangan" required><br><br>
@@ -124,6 +130,7 @@
             <th>Jenis Kelamin</th>
             <th>No. HP</th>
             <th>Alamat</th>
+            <th>No. HP</th>
             <th>Keterangan</th>
             <th>Aksi</th>
         </tr>
@@ -139,6 +146,7 @@
             <td><?php echo $data['jenis_kelamin']; ?></td>
             <td><?php echo $data['umur']; ?></td>
             <td><?php echo $data['alamat']; ?></td>
+            <td><?php echo $data['no_hp']; ?></td>
             <td><?php echo $data['keterangan']; ?></td>
             <td>
                 <a href="?edit=<?php echo $data['id_pasien']; ?>">Edit</a> | 
