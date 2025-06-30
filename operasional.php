@@ -68,19 +68,19 @@ if (isset($_POST['hapus'])) {
             <form action="operasional.php" method="POST">
                 <input type="hidden" name="id_operasional" value="<?= $editData['id_operasional']; ?>">
 
-                <label>Tanggal</label>
-                <input type="date" name="tanggal" value="<?= $editData['tanggal'] ?>"><br><br>
+                <label for="tanggal">Tanggal</label>
+                <input type="date" name="tanggal" id="tanggal" value="<?= $editData['tanggal'] ?>"><br><br>
 
-                <label>Keterangan</label>
-                <input type="text" name="keterangan" value="<?= $editData['keterangan'] ?>"><br><br>
+                <label for="keterangan">Keterangan</label>
+                <input type="text" name="keterangan" id="keterangan" value="<?= $editData['keterangan'] ?>"><br><br>
 
-                <label>Jenis</label>
-                <input type="radio" name="jenis" value="pemasukan" <?= ($editData['jenis'] == 'Pemasukan') ? 'checked' : ''; ?>>Pemasukan
-                <input type="radio" name="jenis" value="pengeluaran" <?= ($editData['jenis'] == 'Pengeluaran') ? 'checked' : ''; ?>>Pengeluaran
+                <label for="jenis">Jenis</label>
+                <input type="radio" name="jenis" id="jenis" value="pemasukan" <?= ($editData['jenis'] == 'Pemasukan') ? 'checked' : ''; ?>>Pemasukan
+                <input type="radio" name="jenis" id="jenis" value="pengeluaran" <?= ($editData['jenis'] == 'Pengeluaran') ? 'checked' : ''; ?>>Pengeluaran
                 <br><br>
 
-                <label>Nominal</label>
-                <input type="number" name="nominal" value="<?= $editData['nominal'] ?>"><br><br>
+                <label for="nominal">Nominal</label>
+                <input type="number" name="nominal" id="nominal" value="<?= $editData['nominal'] ?>"><br><br>
 
                 <input type="submit" name="edit" value="Update Data"> | <a href="operasional.php">Batal</a>
 
@@ -91,19 +91,19 @@ if (isset($_POST['hapus'])) {
             <form method="post">
                 <h2 style="text-align: center;">Tambah Data</h2>
 
-                <label>Tanggal</label>
-                <input type="date" name="tanggal"><br><br>
+                <label for="tanggal">Tanggal</label>
+                <input type="date" name="tanggal" id="tanggal"><br><br>
 
-                <label>Keterangan</label>
-                <input type="text" name="keterangan"><br><br>
+                <label for="keterangan">Keterangan</label>
+                <input type="text" name="keterangan" id="keterangan"><br><br>
 
-                <label>Jenis</label>
-                <input type="radio" name="jenis" value="pemasukan">Pemasukan
-                <input type="radio" name="jenis" value="pengeluaran">Pengeluaran
+                <label for="jenis">Jenis</label>
+                <input type="radio" name="jenis" id="jenis" value="pemasukan">Pemasukan
+                <input type="radio" name="jenis" id="jenis" value="pengeluaran">Pengeluaran
                 <br><br>
 
-                <label>Nominal</label>
-                <input type="number" name="nominal"><br><br>
+                <label for="nominal">Nominal</label>
+                <input type="number" name="nominal" id="nominal"><br><br>
                 <input type="submit" name="simpan" value="Simpan">
             </form>
         <?php } ?>
@@ -119,11 +119,11 @@ if (isset($_POST['hapus'])) {
             <th>Aksi</th>
         </tr>
         <?php
-        // $no = 1;
+        $no = 1;
         foreach ($operasional->tampil() as $data) {
         ?>
             <tr>
-                <td><?php echo $data['id_operasional'] ?></td>
+                <td><?php echo $no++; ?></td>
                 <td><?php echo $data['tanggal'] ?></td>
                 <td><?php echo $data['keterangan'] ?></td>
                 <td><?php echo $data['jenis'] ?></td>

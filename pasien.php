@@ -63,7 +63,7 @@ if (isset($_GET['hapus'])) {
 </head>
 
 <body>
-    <h2 style="text-align: center;">DATA pasien</h2> <a href="index.php">Kembali</a>
+    <h2 style="text-align: center;">DATA PASIEN</h2> <a href="index.php">Kembali</a>
 
 
     <!-- Form Input -->
@@ -75,12 +75,12 @@ if (isset($_GET['hapus'])) {
             <form method="post" action="pasien.php">
                 <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien']; ?>">
 
-                <label>Nama pasien:</label>
-                <input type="text" name="nama" value="<?= $editData['nama_pasien'] ?>" required><br><br>
+                <label for="nama">Nama pasien:</label>
+                <input type="text" name="nama" id="nama" value="<?= $editData['nama_pasien'] ?>" required><br><br>
 
-                <label>Jenis Kelamin:</label>
-                <input type="radio" name="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
-                <input type="radio" name="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
+                <label for="jk">Jenis Kelamin:</label>
+                <input type="radio" name="jk" id="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
+                <input type="radio" name="jk" id="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
 
                 <label>Umur:</label>
                 <input type="text" name="umur" required value="<?= $editData['umur'] ?>"><br><br>
@@ -89,7 +89,7 @@ if (isset($_GET['hapus'])) {
                 <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
 
                 <label>No. HP:</label>
-                <input type="text" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
+                <input type="number" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
 
                 <label>Keterangan:</label>
                 <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
@@ -103,24 +103,24 @@ if (isset($_GET['hapus'])) {
             <form method="post">
                 <h2 style="text-align : center;">Tambah Data</h2>
 
-                <label>Nama pasien:</label>
-                <input type="text" name="nama" required><br><br>
+                <label for="nama">Nama pasien:</label>
+                <input type="text" name="nama" id="nama" required><br><br>
 
-                <label>Jenis Kelamin:</label>
-                <input type="radio" name="jenis_kelamin" value="Laki-laki"> Laki-laki
-                <input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan<br><br>
+                <label for="jk">Jenis Kelamin:</label>
+                <input type="radio" name="jenis_kelamin" id="jk" value="Laki-laki"> Laki-laki
+                <input type="radio" name="jenis_kelamin" id="jk" value="Perempuan"> Perempuan<br><br>
 
-                <label>Umur :</label>
-                <input type="text" name="umur" required><br><br>
+                <label for="umur">Umur :</label>
+                <input type="text" name="umur" id="umur" required><br><br>
 
-                <label>Alamat :</label>
-                <input type="text" name="alamat" required><br><br>
+                <label for="alamat">Alamat :</label>
+                <input type="text" name="alamat" id required><br><br>
 
-                <label>No. HP:</label>
-                <input type="text" name="no_hp" required><br><br>
+                <label for="no">No. HP:</label>
+                <input type="number" name="no_hp" id="no" required><br><br>
 
-                <label>Keterangan :</label>
-                <input type="text" name="keterangan" required><br><br>
+                <label for="keterangan">Keterangan :</label>
+                <input type="text" name="keterangan" id="keterangan" required><br><br>
 
                 <input type="submit" name="simpan" value="Simpan">
 
@@ -146,7 +146,7 @@ if (isset($_GET['hapus'])) {
         foreach ($pasien->tampil() as $data) {
         ?>
             <tr>
-                <td><?php echo $data['id_pasien']; ?></td>
+                <td><?php echo $no++; ?></td>
                 <td><?php echo $data['nama_pasien']; ?></td>
                 <td><?php echo $data['jenis_kelamin']; ?></td>
                 <td><?php echo $data['umur']; ?></td>
@@ -158,7 +158,8 @@ if (isset($_GET['hapus'])) {
                     <a href="?hapus=<?php echo $data['id_pasien']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
                 </td>
             </tr>
-        <?php } ?>
+        <?php
+        } ?>
     </table>
 </body>
 

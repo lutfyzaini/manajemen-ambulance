@@ -41,7 +41,7 @@ class pelayanan
 
     function hapus($id_pelayanan)
     {
-        $sql = "DELETE FROM pelayanan where id = '$id_pelayanan'";
+        $sql = "DELETE FROM pelayanan where id_pelayanan = '$id_pelayanan'";
         return mysqli_query($this->db, $sql);
     }
 
