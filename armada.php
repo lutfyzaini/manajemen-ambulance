@@ -35,6 +35,8 @@ if (isset($_GET['hapus'])) {
 
 <head>
     <title>Data Armada</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         table {
             border-collapse: collapse;
@@ -63,6 +65,13 @@ if (isset($_GET['hapus'])) {
 </head>
 
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">AMBULANCE RJS - Data Armada</a>
+        </div>
+    </nav>
+
     <h2 style="text-align: center;">DATA ARMADA</h2> <a href="index.php">Kembali</a>
 
 

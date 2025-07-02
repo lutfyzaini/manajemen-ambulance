@@ -35,6 +35,8 @@ if (isset($_GET['hapus'])) {
 
 <head>
     <title>Data Pasien</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         table {
             border-collapse: collapse;
@@ -63,6 +65,12 @@ if (isset($_GET['hapus'])) {
 </head>
 
 <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">AMBULANCE RJS - Pasien</a>
+        </div>
+    </nav>
     <h2 style="text-align: center;">DATA PASIEN</h2> <a href="index.php">Kembali</a>
 
 
@@ -134,7 +142,7 @@ if (isset($_GET['hapus'])) {
             <th>No</th>
             <th>Nama pasien</th>
             <th>Jenis Kelamin</th>
-            <th>No. HP</th>
+            <th>Umur</th>
             <th>Alamat</th>
             <th>No. HP</th>
             <th>Keterangan</th>
