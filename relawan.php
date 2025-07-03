@@ -1,33 +1,30 @@
 <?php
-
-require_once(__DIR__ . '\proses\proses-relawan.php');
-$relawan = new relawan();
+require_once(__DIR__ . '/proses/proses-relawan.php');
+$relawan = new Relawan();
 
 if (isset($_POST['simpan'])) {
     $relawan->tambah($_POST['nama'], $_POST['jenis_kelamin'], $_POST['no_hp'], $_POST['alamat']);
-
-    // var_dump($result);
-    // var_dump($_POST['jenis_kelamin']);
     header("location:relawan.php");
+    exit;
 }
 
 $editData = NULL;
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $editData = $relawan->cari($id);
-    // var_dump($editData);
 }
+
 if (isset($_POST['edit'])) {
-    $relawan->edit($_POST['id_relawan'], $_POST['nama'], $_POST['jk'], $_POST['no_hp'], $_POST['alamat']);
+    $relawan->edit($_POST['id_relawan'], $_POST['nama'], $_POST['jenis_kelamin'], $_POST['no_hp'], $_POST['alamat']);
     header('location:relawan.php');
-    // var_dump($editData);
+    exit;
 }
 
 if (isset($_GET['hapus'])) {
     $relawan->hapus($_GET['hapus']);
     header("location:relawan.php");
+    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -36,124 +33,144 @@ if (isset($_GET['hapus'])) {
 <head>
     <title>Data Relawan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .form-input {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!-- navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">AMBULANCE RJS - Data Relawan</a>
+            <h3 class="navbar-brand">AMBULANCE RJS - Relawan</h3>
+            <a class="navbar-brand" href="index.php">Kembali</a>
         </div>
     </nav>
-    <h2 style="text-align: center;">DATA RELAWAN</h2>
-    <a href="index.php">Kembali</a>
+    <!-- body -->
+    <div class="container my-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Form Input / Edit Relawan</div>
+            <div class="card-body">
+                <div class="form-input">
+                    <?php if ($editData) { ?>
+                        <h4 style="text-align : center;">Edit Data</h4>
 
+                        <form method="post" action="relawan.php">
+                            <input type="hidden" name="id_relawan" value="<?= $editData['id_relawan']; ?>">
 
-    <!-- Form Input -->
-    <div class="form-input">
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Relawan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required value="<?= $editData['nama_relawan'] ?>">
+                                </div>
+                            </div>
 
-        <!-- Edit -->
-        <?php if ($editData) { ?>
-            <h2 style="text-align : center;">Edit Data</h2>
-            <form method="post" action="relawan.php">
-                <input type="hidden" name="id_relawan" value="<?= $editData['id_relawan']; ?>">
+                            <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk1" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jk1">Laki-laki</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk2" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jk2">Perempuan</label>
+                                    </div>
+                                </div>
+                            </div>
 
-                <label for="nama">Nama Relawan:</label>
-                <input type="text" id="nama" name="nama" value="<?= $editData['nama_relawan'] ?>" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="no_hp" id="no_hp" required value="<?= $editData['no_hp'] ?>">
+                                </div>
+                            </div>
 
-                <label for="jk">Jenis Kelamin:</label>
-                <input type="radio" id="jk" name="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
-                <input type="radio" id="jk" name="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
+                            <div class="mb-3 row">
+                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="alamat" id="alamat" required value="<?= $editData['alamat'] ?>">
+                                </div>
+                            </div>
 
-                <label for="no_hp">No. HP:</label>
-                <input type="number" id="no_hp" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
+                            <button type="submit" name="edit" class="btn btn-primary">Update</button>
+                            <a href="relawan.php" class="btn btn-secondary">Batal</a>
+                        </form>
 
-                <label for="alamat">Alamat:</label>
-                <input type="text" id="alamat" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
+                    <?php } else { ?>
+                        <h4 style="text-align : center;">Tambah Data</h4>
 
-                <input type="submit" name="edit" value="Update data"> |
-                <a href="relawan.php">Batal</a>
-            </form>
+                        <form method="post">
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Relawan</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required>
+                                </div>
+                            </div>
 
-        <?php } else {  ?>
-            <!-- Input -->
-            <form method="post">
-                <h2 style="text-align : center;">Tambah Data</h2>
+                            <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" value="Laki-laki" id="jk1" required>
+                                        <label class="form-check-label" for="jk1">Laki-laki</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" value="Perempuan" id="jk2">
+                                        <label class="form-check-label" for="jk2">Perempuan</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="no_hp" id="no_hp" required>
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="alamat" id="alamat" required>
+                                </div>
+                            </div>
+                            <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
 
-                <label for="nama">Nama Relawan:</label>
-                <input type="text" id="nama" name="nama" required><br><br>
-
-                <label for="jk">Jenis Kelamin:</label>
-                <input type="radio" id="jk" name="jenis_kelamin" value="Laki-laki" required> Laki-laki
-                <input type="radio" id="jk" name="jenis_kelamin" value="Perempuan"> Perempuan<br><br>
-
-                <label for="no_hp">No. HP:</label>
-                <input type="number" id="no_hp" name="no_hp" required><br><br>
-
-                <label for="alamat">Alamat:</label>
-                <input type="text" id="alamat" name="alamat" required><br><br>
-
-                <input type="submit" name="simpan" value="Simpan">
-
-            </form>
-        <?php } ?>
+        <div class="card">
+            <div class="card-header bg-secondary text-white">Data Relawan</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Relawan</th>
+                            <th>Jenis Kelamin</th>
+                            <th>No. HP</th>
+                            <th>Alamat</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php $no = 1;
+                        foreach ($relawan->tampil() as $data) { ?>
+                            <tr>
+                                <td><?= $no++ ?></td>
+                                <td><?= $data['nama_relawan'] ?></td>
+                                <td><?= $data['jenis_kelamin'] ?></td>
+                                <td><?= $data['no_hp'] ?></td>
+                                <td><?= $data['alamat'] ?></td>
+                                <td>
+                                    <a href="?edit=<?= $data['id_relawan'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="?hapus=<?= $data['id_relawan'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-    <!-- Tampilkan Data -->
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Nama Relawan</th>
-            <th>Jenis Kelamin</th>
-            <th>No. HP</th>
-            <th>Alamat</th>
-            <th>Aksi</th>
-        </tr>
-
-        <?php
-        $no = 1;;
-        foreach ($relawan->tampil() as $data) {
-            // var_dump($data);
-        ?>
-            <tr>
-                <td><?php echo $no++ ?></td>
-                <td><?php echo $data['nama_relawan']; ?></td>
-                <td><?php echo $data['jenis_kelamin']; ?></td>
-                <td><?php echo $data['no_hp']; ?></td>
-                <td><?php echo $data['alamat']; ?></td>
-                <td>
-                    <a href="?edit=<?php echo $data['id_relawan']; ?>">Edit</a> |
-                    <a href="?hapus=<?php echo $data['id_relawan']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                </td>
-            </tr>
-        <?php } ?>
-    </table>
 </body>
 
 </html>

@@ -1,53 +1,37 @@
 <?php
-require_once(__DIR__ . '\proses\proses-pelayanan.php');
-require_once(__DIR__ . '\proses\proses-relawan.php');
-require_once(__DIR__ . '\proses\proses-armada.php');
-require_once(__DIR__ . '\proses\proses-pasien.php');
+require_once(__DIR__ . '/proses/proses-pelayanan.php');
+require_once(__DIR__ . '/proses/proses-relawan.php');
+require_once(__DIR__ . '/proses/proses-armada.php');
+require_once(__DIR__ . '/proses/proses-pasien.php');
 
-$pelayanan = new pelayanan();
-$pasien = new pasien();
-// $dataPasien = [];
-// $tampilPasien = $pasien->tampil();
-// while ($p = $pasien->tampil()) {
-//     $dataPasien[] = $p;
-// }
-$relawan = new relawan();
-// $dataRelawan = $relawan->tampil();
-
-$armada = new armada();
-// $dataArmada = $armada->tampil();
-
-
-// Data tiga entitas(relawan, pasien, armada)
-
-
+$pelayanan = new Pelayanan();
+$pasien = new Pasien();
+$relawan = new Relawan();
+$armada = new Armada();
 
 if (isset($_POST['simpan'])) {
     $pelayanan->tambah($_POST['tanggal'], $_POST['id_pasien'], $_POST['id_relawan'], $_POST['id_armada'], $_POST['dari_lokasi'], $_POST['ke_lokasi'], $_POST['jenis_pelayanan'], $_POST['keterangan']);
-    // $tanggal, $id_relawan, $id_armada, $id_pasien, $dari_lokasi, $ke_lokasi, $jenis_pelayanan, $keterangan
-
-    // var_dump($result);
     header("location:pelayanan.php");
+    exit;
 }
 
 $editData = NULL;
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $editData = $pelayanan->cari($id);
-    // var_dump($editData);
 }
+
 if (isset($_POST['edit'])) {
-    // var_dump($_POST['jenis_kelamin']);
-    $pelayanan->edit($_POST['tanggal'], $_POST['id_pasien'], $_POST['id_pelayanan'],  $_POST['id_relawan'], $_POST['id_armada'], $_POST['dari_lokasi'], $_POST['ke_lokasi'], $_POST['jenis_pelayanan'], $_POST['keterangan']);
+    $pelayanan->edit($_POST['tanggal'], $_POST['id_pasien'], $_POST['id_pelayanan'], $_POST['id_relawan'], $_POST['id_armada'], $_POST['dari_lokasi'], $_POST['ke_lokasi'], $_POST['jenis_pelayanan'], $_POST['keterangan']);
     header('location:pelayanan.php');
-    // var_dump($editData);
+    exit;
 }
 
 if (isset($_GET['hapus'])) {
     $pelayanan->hapus($_GET['hapus']);
     header("location:pelayanan.php");
+    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -56,181 +40,233 @@ if (isset($_GET['hapus'])) {
 <head>
     <title>Data Pelayanan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .form-input {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Data Pelayanan</a>
+            <h3 class="navbar-brand">AMBULANCE RJS - Data Pelayanan</h3>
+            <a class="navbar-brand" href="index.php">Kembali</a>
         </div>
     </nav>
 
-    <div class="container">
-        <h2 style="text-align: center;">DATA PELAYANAN</h2> <a href="index.php">Kembali</a>
+    <!-- body -->
+    <div class="container my-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Form Input/Edit Pelayanan</div>
+            <div class="card-body">
+                <!-- Form Input -->
+                <div class="form-input">
+                    <!-- Edit -->
+                    <?php if ($editData) { ?>
+                        <h4 style="text-align : center;">Edit Data</h4>
+                        <form method="post" action="pelayanan.php">
+                            <input type="hidden" name="id_pelayanan" value="<?= $editData['id_pelayanan']; ?>">
 
+                            <div class="mb-3 row">
+                                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $editData['tanggal'] ?>">
+                                </div>
+                            </div>
 
-        <!-- Form Input -->
-        <div class="form-input">
+                            <div class="mb-3 row">
+                                <label for="pasien" class="col-sm-2 col-form-label">Pasien:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_pasien" id="pasien" required>
+                                        <?php foreach ($pasien->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_pasien']; ?>" <?= ($editData['id_pasien'] == $data['id_pasien']) ? 'selected' : ''; ?>>
+                                                <?= $data['nama_pasien'] ?>
+                                            </option>
+                                        <?php }; ?>
+                                    </select>
+                                </div>
+                            </div>
 
-            <!-- Edit -->
-            <?php if ($editData) { ?>
-                <h2 style="text-align : center;">Edit Data</h2>
-                <form method="post" action="pelayanan.php">
-                    <input type="hidden" name="id_pelayanan" value="<?= $editData['id_pelayanan']; ?>">
-                    <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" value="<?= $editData['tanggal'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label for="relawan" class="col-sm-2 col-form-label">Relawan:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_relawan" id="relawan" required>
+                                        <?php foreach ($relawan->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_relawan']; ?>" <?= ($editData['id_relawan'] == $data['id_relawan']) ? 'selected' : ''; ?>>
+                                                <?= $data['nama_relawan'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <label for="pasien">Pasien :</label>
-                    <select name="id_pasien" id="pasien" required><br><br>
-                        <?php foreach ($pasien->tampil() as $data) { ?>
-                            <option value="<?= $data['id_pasien']; ?>" <?= ($editData['id_pasien'] == $data['id_pasien']) ? 'selected' : ''; ?>> <?= $data['nama_pasien'] ?></option>
-                        <?php }; ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="armada" class="col-sm-2 col-form-label">Armada:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_armada" id="armada" required>
+                                        <?php foreach ($armada->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_armada']; ?>" <?= ($editData['id_armada'] == $data['id_armada']) ? 'selected' : '' ?>>
+                                                <?= $data['nama_armada'] ?>
+                                            </option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <label for="relawan">Relawan :</label>
-                    <select name="id_relawan" id="relawan" required><br><br>
-                        <?php foreach ($relawan->tampil() as $data) { ?>
-                            <option value="<?= $data['id_relawan']; ?>" <?= ($editData['id_relawan'] == $data['id_relawan']) ? 'selected' : ''; ?>><?= $data['nama_relawan'] ?></option>
-                        <?php }  ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="dari_lokasi" class="col-sm-2 col-form-label">Dari Lokasi:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="dari_lokasi" id="dari_lokasi" value="<?= $editData['dari_lokasi'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="armada">Armada :</label>
-                    <select name="id_armada" id="armada" required><br><br>
-                        <?php foreach ($armada->tampil() as $data) { ?>
-                            <option value=" <?= $data['id_armada']; ?>" <?= ($editData['id_armada'] == $data['id_armada']) ? 'selected' : '' ?>><?= $data['nama_armada'] ?></option>
-                        <?php }  ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="ke_lokasi" class="col-sm-2 col-form-label">Ke Lokasi:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="ke_lokasi" id="ke_lokasi" value="<?= $editData['ke_lokasi'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="dari_lokasi">Dari Lokasi :</label>
-                    <input type="text" name="dari_lokasi" id="dari_lokasi" value="<?= $editData['dari_lokasi'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label for="jenis_pelayanan" class="col-sm-2 col-form-label">Jenis Pelayanan:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="jenis_pelayanan" id="jenis_pelayanan" value="<?= $editData['jenis_pelayanan'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="ke_lokasi">Ke Lokasi : </label>
-                    <input type="text" name="ke_lokasi" id="ke_lokasi" value="<?= $editData['ke_lokasi']  ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label for="keterangan" class="col-sm-2 col-form-label">Keterangan:</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="keterangan" id="keterangan"><?= $editData['keterangan'] ?></textarea>
+                                </div>
+                            </div>
 
-                    <label for="jenis_pelayanan">Jenis Pelayanan :</label>
-                    <input type="text" name="jenis_pelayanan" id="jenis_pelayanan" value="<?= $editData['jenis_pelayanan'] ?>"><br><br>
+                            <button type="submit" name="edit" class="btn btn-primary">Update data</button>|
+                            <a href="pelayanan.php" class="btn btn-secondary">Batal</a>
+                        </form>
 
-                    <label for="keterangan">Keterangan :</label>
-                    <input type="text" name="keterangan" id="keterangan" value="<?= $editData['keterangan'] ?>"><br><br>
+                    <?php } else { ?>
+                        <!-- Input -->
+                        <form method="post">
+                            <h4 style="text-align : center;">Tambah Data</h4>
 
-                    <input type="submit" name="edit" value="Update data"> |
-                    <a href="pelayanan.php">Batal</a>
-                </form>
+                            <div class="mb-3 row">
+                                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" required>
+                                </div>
+                            </div>
 
-            <?php } else {  ?>
-                <!-- Input -->
-                <form method="post">
-                    <h2 style="text-align : center;">Tambah Data</h2>
-                    <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="pasien" class="col-sm-2 col-form-label">Pasien:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_pasien" id="pasien" required>
+                                        <option value="">-- Pilih Pasien --</option>
+                                        <?php foreach ($pasien->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_pasien']; ?>"><?= $data['nama_pasien'] ?></option>
+                                        <?php }; ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <label for="pasien">Pasien :</label>
-                    <select name="id_pasien" id="pasien" required><br><br>
-                        <option></option>
-                        <?php foreach ($pasien->tampil() as $data) { ?>
-                            <option value="<?= $data['id_pasien']; ?>"><?= $data['nama_pasien'] ?></option>
-                        <?php }; ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="relawan" class="col-sm-2 col-form-label">Relawan:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_relawan" id="relawan" required>
+                                        <option value="">-- Pilih Relawan --</option>
+                                        <?php foreach ($relawan->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_relawan']; ?>"><?= $data['nama_relawan'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <label for="relawan">Relawan :</label>
-                    <select name="id_relawan" id="relawan" required><br><br>
-                        <option></option>
-                        <?php foreach ($relawan->tampil() as $data) { ?>
-                            <option value="<?= $data['id_relawan']; ?>"><?= $data['nama_relawan'] ?></option>
-                        <?php }  ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="armada" class="col-sm-2 col-form-label">Armada:</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="id_armada" id="armada" required>
+                                        <option value="">-- Pilih Armada --</option>
+                                        <?php foreach ($armada->tampil() as $data) { ?>
+                                            <option value="<?= $data['id_armada']; ?>"><?= $data['nama_armada'] ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                            </div>
 
-                    <label for="armada">Armada :</label>
-                    <select name="id_armada" id="armada" required><br><br>
-                        <option></option>
-                        <?php foreach ($armada->tampil() as $data) { ?>
-                            <option value=" <?= $data['id_armada']; ?>"><?= $data['nama_armada'] ?></option>
-                        <?php }  ?>
-                    </select><br><br>
+                            <div class="mb-3 row">
+                                <label for="dari_lokasi" class="col-sm-2 col-form-label">Dari Lokasi:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="dari_lokasi" id="dari_lokasi" required>
+                                </div>
+                            </div>
 
-                    <label for="dari_lokasi">Dari Lokasi :</label>
-                    <input type="text" name="dari_lokasi" id="dari_lokasi" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="ke_lokasi" class="col-sm-2 col-form-label">Ke Lokasi:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="ke_lokasi" id="ke_lokasi" required>
+                                </div>
+                            </div>
 
-                    <label for="ke_lokasi">Ke Lokasi : </label>
-                    <input type="text" name="ke_lokasi" id="ke_lokasi" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="jenis_pelayanan" class="col-sm-2 col-form-label">Jenis Pelayanan:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="jenis_pelayanan" id="jenis_pelayanan" required>
+                                </div>
+                            </div>
 
-                    <label for="jenis_pelayanan">Jenis Pelayanan :</label>
-                    <input type="text" name="jenis_pelayanan" id="jenis_pelayanan" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="keterangan" class="col-sm-2 col-form-label">Keterangan:</label>
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="keterangan" id="keterangan" required></textarea>
+                                </div>
+                            </div>
 
-                    <label for="keterangan">Keterangan :</label>
-                    <input type="textbox" name="keterangan" id="keterangan" required><br><br>
-
-                    <input type="submit" name="simpan" value="Simpan">
-
-                </form>
-            <?php } ?>
+                            <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
-
-        <!-- Tampilkan Data -->
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Nama pasien</th>
-                <th>Relawan</th>
-                <th>Armada</th>
-                <th>Dari lokasi</th>
-                <th>Ke lokasi</th>
-                <th>Jenis pelayanan</th>
-                <th>Keterangan</th>
-                <th>Aksi</th>
-            </tr>
-
-            <?php
-            $no = 1;;
-            foreach ($pelayanan->tampil() as $data) {
-            ?>
-                <tr>
-                    <td><?php echo $no++; ?></td>
-                    <td><?php echo $data['tanggal']; ?></td>
-                    <td><?php echo $data['nama_pasien']; ?></td>
-                    <td><?php echo $data['nama_relawan']; ?></td>
-                    <td><?php echo $data['nama_armada']; ?></td>
-                    <td><?php echo $data['dari_lokasi']; ?></td>
-                    <td><?php echo $data['ke_lokasi']; ?></td>
-                    <td><?php echo $data['jenis_pelayanan']; ?></td>
-                    <td><?php echo $data['keterangan']; ?></td>
-                    <td>
-                        <a href="?edit=<?php echo $data['id_pelayanan']; ?>">Edit</a> |
-                        <a href="?hapus=<?php echo $data['id_pelayanan']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                    </td>
-                </tr>
-            <?php } ?>
-        </table>
+        <div class="card">
+            <div class="card-header text-white bg-secondary">Data Pelayanan</div>
+            <!-- Tampilkan Data -->
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Nama pasien</th>
+                            <th>Relawan</th>
+                            <th>Armada</th>
+                            <th>Dari lokasi</th>
+                            <th>Ke lokasi</th>
+                            <th>Jenis pelayanan</th>
+                            <th>Keterangan</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $no = 1;
+                    foreach ($pelayanan->tampil() as $data) {
+                    ?>
+                        <tr>
+                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $data['tanggal']; ?></td>
+                            <td><?php echo $data['nama_pasien']; ?></td>
+                            <td><?php echo $data['nama_relawan']; ?></td>
+                            <td><?php echo $data['nama_armada']; ?></td>
+                            <td><?php echo $data['dari_lokasi']; ?></td>
+                            <td><?php echo $data['ke_lokasi']; ?></td>
+                            <td><?php echo $data['jenis_pelayanan']; ?></td>
+                            <td><?php echo $data['keterangan']; ?></td>
+                            <td>
+                                <a href="?edit=<?php echo $data['id_pelayanan']; ?>" class="btn btn-sm btn-warning">Edit</a> |
+                                <a href="?hapus=<?php echo $data['id_pelayanan']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
+            </div>
+        </div>
     </div>
-
 </body>
 
 </html>

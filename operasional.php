@@ -1,11 +1,12 @@
 <?php
 require_once(__DIR__ . '/proses/proses-operasional.php');
 
-$operasional = new operasional();
+$operasional = new Operasional();
 
 if (isset($_POST['simpan'])) {
     $operasional->tambah($_POST['tanggal'], $_POST['keterangan'], $_POST['jenis'], $_POST['nominal']);
     header('location:operasional.php');
+    exit;
 }
 
 $editData = NULL;
@@ -17,13 +18,14 @@ if (isset($_GET['edit'])) {
 if (isset($_POST['edit'])) {
     $operasional->edit($_POST['id_operasional'], $_POST['tanggal'], $_POST['keterangan'], $_POST['jenis'], $_POST['nominal']);
     header('location:operasional.php');
+    exit;
 }
 
-if (isset($_POST['hapus'])) {
-    $operasional->hapus($_GET['id_operasional']);
+if (isset($_GET['hapus'])) {
+    $operasional->hapus($_GET['hapus']);
     header('location:operasional.php');
+    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -34,118 +36,149 @@ if (isset($_POST['hapus'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Operasional</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .form-input {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Data Operasional</a>
+            <h3 class="navbar-brand">AMBULANCE RJS - Data Operasional</h3>
+            <a class="navbar-brand" href="index.php">Kembali</a>
         </div>
     </nav>
-    <div class="container">
-        <h2 style="text-align: center;">DATA OPERASIONAL</h2> <a href="index.php">Kembali</a>
-        <div class="form-input">
-            <?php if ($editData) { ?>
-                <h2 style="text-align: center;">Edit Data</h2>
-                <form action="operasional.php" method="POST">
-                    <input type="hidden" name="id_operasional" value="<?= $editData['id_operasional']; ?>">
 
-                    <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal" value="<?= $editData['tanggal'] ?>"><br><br>
+    <!-- body -->
+    <div class="container my-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Form Input / Edit</div>
+            <div class="card-body">
+                <!-- Form Input -->
+                <div class="form-input">
+                    <?php if ($editData) { ?>
+                        <h4 style="text-align: center;">Edit Data</h4>
+                        <form action="operasional.php" method="POST">
+                            <input type="hidden" name="id_operasional" value="<?= $editData['id_operasional']; ?>">
 
-                    <label for="keterangan">Keterangan</label>
-                    <input type="text" name="keterangan" id="keterangan" value="<?= $editData['keterangan'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" value="<?= $editData['tanggal'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="jenis">Jenis</label>
-                    <input type="radio" name="jenis" id="jenis" value="pemasukan" <?= ($editData['jenis'] == 'Pemasukan') ? 'checked' : ''; ?>>Pemasukan
-                    <input type="radio" name="jenis" id="jenis" value="pengeluaran" <?= ($editData['jenis'] == 'Pengeluaran') ? 'checked' : ''; ?>>Pengeluaran
-                    <br><br>
+                            <div class="mb-3 row">
+                                <label for="keterangan" class="col-sm-2 col-form-label">Keterangan:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="keterangan" id="keterangan" value="<?= $editData['keterangan'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="nominal">Nominal</label>
-                    <input type="number" name="nominal" id="nominal" value="<?= $editData['nominal'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label">Jenis:</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="jenis1" value="pemasukan" <?= ($editData['jenis'] == 'Pemasukan') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jenis1">Pemasukan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="jenis2" value="pengeluaran" <?= ($editData['jenis'] == 'Pengeluaran') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jenis2">Pengeluaran</label>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <input type="submit" name="edit" value="Update Data"> | <a href="operasional.php">Batal</a>
+                            <div class="mb-3 row">
+                                <label for="nominal" class="col-sm-2 col-form-label">Nominal:</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="nominal" id="nominal" value="<?= $editData['nominal'] ?>">
+                                </div>
+                            </div>
 
-                </form>
+                            <button type="submit" name="edit" class="btn btn-primary">Update data</button>|
+                            <a href="operasional.php" class="btn btn-secondary">Batal</a>
+                        </form>
 
+                    <?php } else { ?>
+                        <form method="post">
+                            <h4 style="text-align: center;">Tambah Data</h4>
 
-            <?php } else { ?>
-                <form method="post">
-                    <h2 style="text-align: center;">Tambah Data</h2>
+                            <div class="mb-3 row">
+                                <label for="tanggal" class="col-sm-2 col-form-label">Tanggal:</label>
+                                <div class="col-sm-10">
+                                    <input type="date" class="form-control" name="tanggal" id="tanggal" required>
+                                </div>
+                            </div>
 
-                    <label for="tanggal">Tanggal</label>
-                    <input type="date" name="tanggal" id="tanggal"><br><br>
+                            <div class="mb-3 row">
+                                <label for="keterangan" class="col-sm-2 col-form-label">Keterangan:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="keterangan" id="keterangan" required>
+                                </div>
+                            </div>
 
-                    <label for="keterangan">Keterangan</label>
-                    <input type="text" name="keterangan" id="keterangan"><br><br>
+                            <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label">Jenis:</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="jenis1" value="pemasukan" required>
+                                        <label class="form-check-label" for="jenis1">Pemasukan</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis" id="jenis2" value="pengeluaran">
+                                        <label class="form-check-label" for="jenis2">Pengeluaran</label>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <label for="jenis">Jenis</label>
-                    <input type="radio" name="jenis" id="jenis" value="pemasukan">Pemasukan
-                    <input type="radio" name="jenis" id="jenis" value="pengeluaran">Pengeluaran
-                    <br><br>
+                            <div class="mb-3 row">
+                                <label for="nominal" class="col-sm-2 col-form-label">Nominal:</label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control" name="nominal" id="nominal" required>
+                                </div>
+                            </div>
 
-                    <label for="nominal">Nominal</label>
-                    <input type="number" name="nominal" id="nominal"><br><br>
-                    <input type="submit" name="simpan" value="Simpan">
-                </form>
-            <?php } ?>
+                            <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
-        <!-- tampil data -->
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Tanggal</th>
-                <th>Keterangan</th>
-                <th>Jenis</th>
-                <th>Nominal</th>
-                <th>Aksi</th>
-            </tr>
-            <?php
-            $no = 1;
-            foreach ($operasional->tampil() as $data) {
-            ?>
-                <tr>
-                    <td><?php echo $no++; ?></td>
-                    <td><?php echo $data['tanggal'] ?></td>
-                    <td><?php echo $data['keterangan'] ?></td>
-                    <td><?php echo $data['jenis'] ?></td>
-                    <td><?php echo $data['nominal'] ?></td>
-                    <td>
-                        <a href="?edit=<?php echo $data['id_operasional'] ?>">Edit</a> |
-                        <a href="?hapus=<?php echo $data['id_operasional'] ?>" onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                    </td>
-                </tr>
-            <?php } ?>
-        </table>
-    </div>
+        <div class="card">
+            <div class="card-header text-white bg-secondary">Data Operasional</div>
 
+            <!-- Tampilkan Data -->
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Tanggal</th>
+                            <th>Keterangan</th>
+                            <th>Jenis</th>
+                            <th>Nominal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $no = 1;
+                    foreach ($operasional->tampil() as $data) {
+                    ?>
+                        <tr>
+                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $data['tanggal'] ?></td>
+                            <td><?php echo $data['keterangan'] ?></td>
+                            <td><?php echo $data['jenis'] ?></td>
+                            <td><?php echo $data['nominal'] ?></td>
+                            <td>
+                                <a href="?edit=<?php echo $data['id_operasional'] ?>" class="btn btn-sm btn-warning">Edit</a> |
+                                <a href="?hapus=<?php echo $data['id_operasional'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

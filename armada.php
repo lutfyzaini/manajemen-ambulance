@@ -1,33 +1,30 @@
 <?php
-require_once __DIR__ . '\proses\proses-armada.php';
-$armada = new armada();
-
+require_once __DIR__ . '/proses/proses-armada.php';
+$armada = new Armada();
 
 if (isset($_POST['simpan'])) {
     $armada->tambah($_POST['nama'], $_POST['plat'], $_POST['status']);
-
-    // var_dump($result);
-    // var_dump($_POST['jenis_kelamin']);
     header("location:armada.php");
+    exit;
 }
 
 $editData = NULL;
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $editData = $armada->cari($id);
-    // var_dump($editData);
 }
+
 if (isset($_POST['edit'])) {
     $armada->edit($_POST['id_armada'], $_POST['nama'], $_POST['plat'], $_POST['status']);
     header('location:armada.php');
-    // var_dump($editData);
+    exit;
 }
 
 if (isset($_GET['hapus'])) {
     $armada->hapus($_GET['hapus']);
     header("location:armada.php");
+    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -37,114 +34,120 @@ if (isset($_GET['hapus'])) {
     <title>Data Armada</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 80%;
-            margin: 20px auto;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .form-input {
-            width: 80%;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Data Armada</a>
+            <h3 class="navbar-brand">AMBULANCE RJS - Data Armada</h3>
+            <a class="navbar-brand" href="index.php">Kembali</a>
         </div>
     </nav>
-    <div class="container mt-5">
-        <h2 style="text-align: center;">DATA ARMADA</h2> <a href="index.php">Kembali</a>
 
+    <!-- body -->
+    <div class="container my-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Form Input / Edit</div>
+            <div class="card-body">
+                <!-- Form Input -->
+                <div class="form-input">
+                    <!-- Edit -->
+                    <?php if ($editData) { ?>
+                        <h4 style="text-align : center;">Edit Data</h4>
+                        <form method="post" action="armada.php">
+                            <input type="hidden" name="id_armada" value="<?= $editData['id_armada']; ?>">
 
-        <!-- Form Input -->
-        <div class="form-input">
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Armada</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required value="<?= $editData['nama_armada'] ?>">
+                                </div>
+                            </div>
 
-            <!-- Edit -->
-            <?php if ($editData) { ?>
-                <h2 style="text-align : center;">Edit Data</h2>
-                <form method="post" action="armada.php">
-                    <input type="hidden" name="id_armada" value="<?= $editData['id_armada']; ?>">
+                            <div class="mb-3 row">
+                                <label for="plat" class="col-sm-2 col-form-label">Plat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="plat" name="plat" required value="<?= $editData['plat'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="nama">Nama Armada :</label>
-                    <input type="text" name="nama" id="nama" value="<?= $editData['nama_armada'] ?>" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="status" class="col-sm-2 col-form-label">Status</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="status" name="status" required value="<?= $editData['status'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="plat">Plat :</label>
-                    <input type="text" name="plat" id="plat" required value="<?= $editData['plat'] ?>"><br><br>
+                            <button type="submit" name="edit" class="btn btn-primary"> Update data </button> |
+                            <a href="armada.php" class="btn btn-secondary">Batal</a>
+                        </form>
 
-                    <label for="status">Status :</label>
-                    <input type="text" name="status" id="status" required value="<?= $editData['status'] ?>"><br><br>
+                    <?php } else {  ?>
+                        <!-- Input -->
+                        <form method="post">
+                            <h4 style="text-align : center;">Tambah Data</h4>
 
-                    <input type="submit" name="edit" value="Update data"> |
-                    <a href="armada.php">Batal</a>
-                </form>
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Armada</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required>
+                                </div>
+                            </div>
 
-            <?php } else {  ?>
-                <!-- Input -->
-                <form method="post">
-                    <h2 style="text-align : center;">Tambah Data</h2>
+                            <div class="mb-3 row">
+                                <label for="plat" class="col-sm-2 col-form-label">Plat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="plat" name="plat" required>
+                                </div>
+                            </div>
 
-                    <label for="nama">Nama Armada :</label>
-                    <input type="text" name="nama" id="nama" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="status" class="col-sm-2 col-form-label">Status</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="status" name="status" required>
+                                </div>
+                            </div>
 
-                    <label for="plat">Plat :</label>
-                    <input type="text" name="plat" id="plat" required><br><br>
-
-                    <label for="status">Status :</label>
-                    <input type="text" name="status" id="status" required><br><br>
-
-                    <input type="submit" name="simpan" value="Simpan">
-
-                </form>
-            <?php } ?>
+                            <button type="submit" name="simpan" class="btn btn-sm btn-primary">Simpan</button>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
-
-        <!-- Tampilkan Data -->
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Nama Armada</th>
-                <th>Plat</th>
-                <th>Status</th>
-                <th>Aksi</th>
-            </tr>
-
-            <?php
-            $no = 1;;
-            foreach ($armada->tampil() as $data) {
-            ?>
-                <tr>
-                    <td><?php echo $no++; ?></td>
-                    <td><?php echo $data['nama_armada']; ?></td>
-                    <td><?php echo $data['plat']; ?></td>
-                    <td><?php echo $data['status']; ?></td>
-                    <td>
-                        <a href="?edit=<?php echo $data['id_armada']; ?>">Edit</a> |
-                        <a href="?hapus=<?php echo $data['id_armada']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                    </td>
-                </tr>
-            <?php } ?>
-        </table>
+        <div class="card">
+            <div class="card-header text-white bg-secondary">Data Armada</div>
+            <!-- Tampilkan Data -->
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Armada</th>
+                            <th>Plat</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $no = 1;
+                    foreach ($armada->tampil() as $data) {
+                    ?>
+                        <tr>
+                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $data['nama_armada']; ?></td>
+                            <td><?php echo $data['plat']; ?></td>
+                            <td><?php echo $data['status']; ?></td>
+                            <td>
+                                <a href="?edit=<?php echo $data['id_armada']; ?>" class="btn btn-sm btn-warning">Edit</a> |
+                                <a href="?hapus=<?php echo $data['id_armada']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </table>
+            </div>
+        </div>
     </div>
-
 </body>
 
 </html>

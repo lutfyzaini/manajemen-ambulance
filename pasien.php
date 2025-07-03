@@ -1,33 +1,30 @@
 <?php
-
-require_once(__DIR__ . '\proses\proses-pasien.php');
-$pasien = new pasien();
+require_once(__DIR__ . '/proses/proses-pasien.php');
+$pasien = new Pasien();
 
 if (isset($_POST['simpan'])) {
-    $pasien->tambah($_POST['nama'], $_POST['jenis_kelamin'], $_POST['umur'], $_POST['alamat'], $_POST['no_hp'], $_POST['keterangan']);
-
-    // var_dump($result);
+    $pasien->tambah($_POST['nama'], $_POST['jenis_kelamin'], $_POST['umur'], $_POST['alamat'], $_POST['no_hp'], $_POST['diagnosa']);
     header("location:pasien.php");
+    exit;
 }
 
 $editData = NULL;
 if (isset($_GET['edit'])) {
     $id = $_GET['edit'];
     $editData = $pasien->cari($id);
-    // var_dump($editData);
 }
+
 if (isset($_POST['edit'])) {
-    // var_dump($_POST['jenis_kelamin']);
-    $pasien->edit($_POST['id_pasien'], $_POST['nama'], $_POST['jk'], $_POST['umur'], $_POST['alamat'], $_POST['no_hp'], $_POST['keterangan']);
+    $pasien->edit($_POST['id_pasien'], $_POST['nama'], $_POST['jenis_kelamin'], $_POST['umur'], $_POST['alamat'], $_POST['no_hp'], $_POST['diagnosa']);
     header('location:pasien.php');
-    // var_dump($editData);
+    exit;
 }
 
 if (isset($_GET['hapus'])) {
     $pasien->hapus($_GET['hapus']);
     header("location:pasien.php");
+    exit;
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -36,143 +33,185 @@ if (isset($_GET['hapus'])) {
 <head>
     <title>Data Pasien</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <style>
-        table {
-            /* border-collapse: collapse; */
-            width: 100%;
-            margin: 20px auto;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .form-input {
-            /* width: 80%; */
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-    </style>
 </head>
 
 <body>
+
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Pasien</a>
+            <h3 class="navbar-brand">AMBULANCE RJS - Pasien</h3>
+            <a class="navbar-brand" href="index.php">Kembali</a>
         </div>
     </nav>
 
-    <div class="container">
-        <h2 style="text-align: center;">DATA PASIEN</h2> <a href="index.php">Kembali</a>
+    <!-- body -->
+    <div class="container my-4">
+        <!-- AKSI -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">Form Input / Edit</div>
+            <div class="card-body">
+                <div class="form-input">
+                    <!-- Edit -->
+                    <?php if ($editData) { ?>
+                        <h4 style="text-align : center;">Edit Data</h4>
+                        <form method="post" action="pasien.php">
+                            <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien']; ?>">
 
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Pasien</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required value="<?= $editData['nama_pasien'] ?>">
+                                </div>
+                            </div>
 
-        <!-- Form Input -->
-        <div class="form-input">
+                            <div class="mb-3 row">
+                                <label for="jenis_kelamin" class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk1" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jk1">Laki-laki</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk2" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>>
+                                        <label class="form-check-label" for="jk2">Perempuan</label>
+                                    </div>
+                                </div>
+                            </div>
 
-            <!-- Edit -->
-            <?php if ($editData) { ?>
-                <h2 style="text-align : center;">Edit Data</h2>
-                <form method="post" action="pasien.php">
-                    <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien']; ?>">
+                            <div class="mb-3 row">
+                                <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="umur" id="umur" class="form-control" required value="<?= $editData['umur'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="nama">Nama pasien:</label>
-                    <input type="text" name="nama" id="nama" value="<?= $editData['nama_pasien'] ?>" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="alamat" id="alamat" class="form-control" required value="<?= $editData['alamat'] ?>">
+                                </div>
+                            </div>
 
-                    <label for="jk">Jenis Kelamin:</label>
-                    <input type="radio" name="jk" id="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
-                    <input type="radio" name="jk" id="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
+                            <div class="mb-3 row">
+                                <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="no_hp" id="no_hp" class="form-control" required value="<?= $editData['no_hp'] ?>">
+                                </div>
+                            </div>
 
-                    <label>Umur:</label>
-                    <input type="text" name="umur" required value="<?= $editData['umur'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label for="diagnosa" class="col-sm-2 col-form-label">Diagnosa</label>
+                                <div class="col-sm-10">
+                                    <textarea name="diagnosa" class="form-control" id="diagnosa" required><?= $editData['diagnosa'] ?></textarea>
+                                </div>
+                            </div>
 
-                    <label>Alamat:</label>
-                    <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
+                            <button type="submit" name="edit" class="btn btn-primary">Update data</button>|
+                            <a href="pasien.php" class="btn btn-secondary">Batal</a>
+                        </form>
 
-                    <label>No. HP:</label>
-                    <input type="number" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
+                    <?php } else {  ?>
+                        <!-- Input -->
+                        <h4 style="text-align : center;">Tambah Data</h4>
+                        <form method="post">
+                            <div class="mb-3 row">
+                                <label for="nama" class="col-sm-2 col-form-label">Nama Pasien</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="nama" name="nama" required>
+                                </div>
+                            </div>
 
-                    <label>Keterangan:</label>
-                    <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
+                            <div class="mb-3 row">
+                                <label class="col-sm-2 col-form-label">Jenis Kelamin</label>
+                                <div class="col-sm-10">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk1" value="Laki-laki">
+                                        <label class="form-check-label" for="jk1">Laki-laki</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="jenis_kelamin" id="jk2" value="Perempuan">
+                                        <label class="form-check-label" for="jk2">Perempuan</label>
+                                    </div>
+                                </div>
+                            </div>
 
-                    <input type="submit" name="edit" value="Update data"> |
-                    <a href="pasien.php">Batal</a>
-                </form>
+                            <div class="mb-3 row">
+                                <label for="umur" class="col-sm-2 col-form-label">Umur</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="umur" id="umur" class="form-control" required>
+                                </div>
+                            </div>
 
-            <?php } else {  ?>
-                <!-- Input -->
-                <form method="post">
-                    <h2 style="text-align : center;">Tambah Data</h2>
+                            <div class="mb-3 row">
+                                <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
+                                <div class="col-sm-10">
+                                    <input type="text" name="alamat" id="alamat" class="form-control" required>
+                                </div>
+                            </div>
 
-                    <label for="nama">Nama pasien:</label>
-                    <input type="text" name="nama" id="nama" required><br><br>
+                            <div class="mb-3 row">
+                                <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
+                                <div class="col-sm-10">
+                                    <input type="number" name="no_hp" id="no_hp" class="form-control" required>
+                                </div>
+                            </div>
 
-                    <label for="jk">Jenis Kelamin:</label>
-                    <input type="radio" name="jenis_kelamin" id="jk" value="Laki-laki"> Laki-laki
-                    <input type="radio" name="jenis_kelamin" id="jk" value="Perempuan"> Perempuan<br><br>
+                            <div class="mb-3 row">
+                                <label for="diagnosa" class="col-sm-2 col-form-label">Diagnosa</label>
+                                <div class="col-sm-10">
+                                    <textarea name="diagnosa" class="form-control" id="diagnosa" required></textarea>
+                                </div>
+                            </div>
 
-                    <label for="umur">Umur :</label>
-                    <input type="text" name="umur" id="umur" required><br><br>
+                            <button type="submit" name="simpan" class="btn btn-success">Simpan</button>
 
-                    <label for="alamat">Alamat :</label>
-                    <input type="text" name="alamat" id required><br><br>
-
-                    <label for="no">No. HP:</label>
-                    <input type="number" name="no_hp" id="no" required><br><br>
-
-                    <label for="diagnosa">Diagnosa :</label>
-                    <input type="text" name="diagnosa" id="diagnosa" required><br><br>
-
-                    <input type="submit" name="simpan" value="Simpan">
-
-                </form>
-            <?php } ?>
+                        </form>
+                    <?php } ?>
+                </div>
+            </div>
         </div>
+        <div class="card">
+            <div class="card-header text-white bg-secondary">Data Pasien</div>
+            <!-- Tampilkan Data -->
+            <div class="card-body">
 
-        <!-- Tampilkan Data -->
-        <table>
-            <tr>
-                <th>No</th>
-                <th>Nama pasien</th>
-                <th>Jenis Kelamin</th>
-                <th>Umur</th>
-                <th>Alamat</th>
-                <th>No. HP</th>
-                <th>Diagnoas</th>
-                <th>Aksi</th>
-            </tr>
-
-            <?php
-            $no = 1;
-            foreach ($pasien->tampil() as $data) {
-            ?>
-                <tr>
-                    <td><?php echo $no++; ?></td>
-                    <td><?php echo $data['nama_pasien']; ?></td>
-                    <td><?php echo $data['jenis_kelamin']; ?></td>
-                    <td><?php echo $data['umur']; ?></td>
-                    <td><?php echo $data['alamat']; ?></td>
-                    <td><?php echo $data['no_hp']; ?></td>
-                    <td><?php echo $data['diagnosa']; ?></td>
-                    <td>
-                        <a href="?edit=<?php echo $data['id_pasien']; ?>">Edit</a> |
-                        <a href="?hapus=<?php echo $data['id_pasien']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                    </td>
-                </tr>
-            <?php
-            } ?>
-        </table>
+                <table class="table table-bordered table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>No</th>
+                            <th>Nama pasien</th>
+                            <th>Jenis Kelamin</th>
+                            <th>Umur</th>
+                            <th>Alamat</th>
+                            <th>No. HP</th>
+                            <th>Diagnosa</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <?php
+                    $no = 1;
+                    foreach ($pasien->tampil() as $data) {
+                    ?>
+                        <tr>
+                            <td><?php echo $no++; ?></td>
+                            <td><?php echo $data['nama_pasien']; ?></td>
+                            <td><?php echo $data['jenis_kelamin']; ?></td>
+                            <td><?php echo $data['umur']; ?></td>
+                            <td><?php echo $data['alamat']; ?></td>
+                            <td><?php echo $data['no_hp']; ?></td>
+                            <td><?php echo $data['diagnosa']; ?></td>
+                            <td>
+                                <a href="?edit=<?php echo $data['id_pasien']; ?>" class="btn btn-sm btn-warning">Edit</a> |
+                                <a href="?hapus=<?php echo $data['id_pasien']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                            </td>
+                        </tr>
+                    <?php
+                    } ?>
+                </table>
+            </div>
+        </div>
     </div>
-
 </body>
 
 </html>

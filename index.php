@@ -109,7 +109,7 @@ $db = new database();
             <!-- Tabel pelayanan -->
             <div class="mt-4">
                 <h2 class="m-5 text-center">Histori Pelayanan</h2>
-                
+
                 <table class="table">
                     <thead>
                         <tr>
