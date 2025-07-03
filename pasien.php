@@ -39,8 +39,8 @@ if (isset($_GET['hapus'])) {
 
     <style>
         table {
-            border-collapse: collapse;
-            width: 80%;
+            /* border-collapse: collapse; */
+            width: 100%;
             margin: 20px auto;
         }
 
@@ -56,7 +56,7 @@ if (isset($_GET['hapus'])) {
         }
 
         .form-input {
-            width: 80%;
+            /* width: 80%; */
             margin: 20px auto;
             padding: 20px;
             border: 1px solid #ddd;
@@ -68,107 +68,111 @@ if (isset($_GET['hapus'])) {
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">AMBULANCE RJS - Pasien</a>
+            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Pasien</a>
         </div>
     </nav>
-    <h2 style="text-align: center;">DATA PASIEN</h2> <a href="index.php">Kembali</a>
+
+    <div class="container">
+        <h2 style="text-align: center;">DATA PASIEN</h2> <a href="index.php">Kembali</a>
 
 
-    <!-- Form Input -->
-    <div class="form-input">
+        <!-- Form Input -->
+        <div class="form-input">
 
-        <!-- Edit -->
-        <?php if ($editData) { ?>
-            <h2 style="text-align : center;">Edit Data</h2>
-            <form method="post" action="pasien.php">
-                <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien']; ?>">
+            <!-- Edit -->
+            <?php if ($editData) { ?>
+                <h2 style="text-align : center;">Edit Data</h2>
+                <form method="post" action="pasien.php">
+                    <input type="hidden" name="id_pasien" value="<?= $editData['id_pasien']; ?>">
 
-                <label for="nama">Nama pasien:</label>
-                <input type="text" name="nama" id="nama" value="<?= $editData['nama_pasien'] ?>" required><br><br>
+                    <label for="nama">Nama pasien:</label>
+                    <input type="text" name="nama" id="nama" value="<?= $editData['nama_pasien'] ?>" required><br><br>
 
-                <label for="jk">Jenis Kelamin:</label>
-                <input type="radio" name="jk" id="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
-                <input type="radio" name="jk" id="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
+                    <label for="jk">Jenis Kelamin:</label>
+                    <input type="radio" name="jk" id="jk" value="Laki-laki" <?= ($editData['jenis_kelamin'] == 'Laki-laki') ? 'checked' : ''; ?>> Laki-laki
+                    <input type="radio" name="jk" id="jk" value="Perempuan" <?= ($editData['jenis_kelamin'] == 'Perempuan') ? 'checked' : ''; ?>> Perempuan<br><br>
 
-                <label>Umur:</label>
-                <input type="text" name="umur" required value="<?= $editData['umur'] ?>"><br><br>
+                    <label>Umur:</label>
+                    <input type="text" name="umur" required value="<?= $editData['umur'] ?>"><br><br>
 
-                <label>Alamat:</label>
-                <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
+                    <label>Alamat:</label>
+                    <input type="text" name="alamat" required value="<?= $editData['alamat'] ?>"><br><br>
 
-                <label>No. HP:</label>
-                <input type="number" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
+                    <label>No. HP:</label>
+                    <input type="number" name="no_hp" required value="<?= $editData['no_hp'] ?>"><br><br>
 
-                <label>Keterangan:</label>
-                <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
+                    <label>Keterangan:</label>
+                    <input type="text" name="keterangan" required value="<?= $editData['keterangan'] ?>"><br><br>
 
-                <input type="submit" name="edit" value="Update data"> |
-                <a href="pasien.php">Batal</a>
-            </form>
+                    <input type="submit" name="edit" value="Update data"> |
+                    <a href="pasien.php">Batal</a>
+                </form>
 
-        <?php } else {  ?>
-            <!-- Input -->
-            <form method="post">
-                <h2 style="text-align : center;">Tambah Data</h2>
+            <?php } else {  ?>
+                <!-- Input -->
+                <form method="post">
+                    <h2 style="text-align : center;">Tambah Data</h2>
 
-                <label for="nama">Nama pasien:</label>
-                <input type="text" name="nama" id="nama" required><br><br>
+                    <label for="nama">Nama pasien:</label>
+                    <input type="text" name="nama" id="nama" required><br><br>
 
-                <label for="jk">Jenis Kelamin:</label>
-                <input type="radio" name="jenis_kelamin" id="jk" value="Laki-laki"> Laki-laki
-                <input type="radio" name="jenis_kelamin" id="jk" value="Perempuan"> Perempuan<br><br>
+                    <label for="jk">Jenis Kelamin:</label>
+                    <input type="radio" name="jenis_kelamin" id="jk" value="Laki-laki"> Laki-laki
+                    <input type="radio" name="jenis_kelamin" id="jk" value="Perempuan"> Perempuan<br><br>
 
-                <label for="umur">Umur :</label>
-                <input type="text" name="umur" id="umur" required><br><br>
+                    <label for="umur">Umur :</label>
+                    <input type="text" name="umur" id="umur" required><br><br>
 
-                <label for="alamat">Alamat :</label>
-                <input type="text" name="alamat" id required><br><br>
+                    <label for="alamat">Alamat :</label>
+                    <input type="text" name="alamat" id required><br><br>
 
-                <label for="no">No. HP:</label>
-                <input type="number" name="no_hp" id="no" required><br><br>
+                    <label for="no">No. HP:</label>
+                    <input type="number" name="no_hp" id="no" required><br><br>
 
-                <label for="keterangan">Keterangan :</label>
-                <input type="text" name="keterangan" id="keterangan" required><br><br>
+                    <label for="diagnosa">Diagnosa :</label>
+                    <input type="text" name="diagnosa" id="diagnosa" required><br><br>
 
-                <input type="submit" name="simpan" value="Simpan">
+                    <input type="submit" name="simpan" value="Simpan">
 
-            </form>
-        <?php } ?>
+                </form>
+            <?php } ?>
+        </div>
+
+        <!-- Tampilkan Data -->
+        <table>
+            <tr>
+                <th>No</th>
+                <th>Nama pasien</th>
+                <th>Jenis Kelamin</th>
+                <th>Umur</th>
+                <th>Alamat</th>
+                <th>No. HP</th>
+                <th>Diagnoas</th>
+                <th>Aksi</th>
+            </tr>
+
+            <?php
+            $no = 1;
+            foreach ($pasien->tampil() as $data) {
+            ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td><?php echo $data['nama_pasien']; ?></td>
+                    <td><?php echo $data['jenis_kelamin']; ?></td>
+                    <td><?php echo $data['umur']; ?></td>
+                    <td><?php echo $data['alamat']; ?></td>
+                    <td><?php echo $data['no_hp']; ?></td>
+                    <td><?php echo $data['diagnosa']; ?></td>
+                    <td>
+                        <a href="?edit=<?php echo $data['id_pasien']; ?>">Edit</a> |
+                        <a href="?hapus=<?php echo $data['id_pasien']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                    </td>
+                </tr>
+            <?php
+            } ?>
+        </table>
     </div>
 
-    <!-- Tampilkan Data -->
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Nama pasien</th>
-            <th>Jenis Kelamin</th>
-            <th>Umur</th>
-            <th>Alamat</th>
-            <th>No. HP</th>
-            <th>Keterangan</th>
-            <th>Aksi</th>
-        </tr>
-
-        <?php
-        $no = 1;
-        foreach ($pasien->tampil() as $data) {
-        ?>
-            <tr>
-                <td><?php echo $no++; ?></td>
-                <td><?php echo $data['nama_pasien']; ?></td>
-                <td><?php echo $data['jenis_kelamin']; ?></td>
-                <td><?php echo $data['umur']; ?></td>
-                <td><?php echo $data['alamat']; ?></td>
-                <td><?php echo $data['no_hp']; ?></td>
-                <td><?php echo $data['keterangan']; ?></td>
-                <td>
-                    <a href="?edit=<?php echo $data['id_pasien']; ?>">Edit</a> |
-                    <a href="?hapus=<?php echo $data['id_pasien']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                </td>
-            </tr>
-        <?php
-        } ?>
-    </table>
 </body>
 
 </html>

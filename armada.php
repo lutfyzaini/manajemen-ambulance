@@ -68,81 +68,83 @@ if (isset($_GET['hapus'])) {
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="#">AMBULANCE RJS - Data Armada</a>
+            <a class="navbar-brand" href="index.php">AMBULANCE RJS - Data Armada</a>
         </div>
     </nav>
+    <div class="container mt-5">
+        <h2 style="text-align: center;">DATA ARMADA</h2> <a href="index.php">Kembali</a>
 
-    <h2 style="text-align: center;">DATA ARMADA</h2> <a href="index.php">Kembali</a>
 
+        <!-- Form Input -->
+        <div class="form-input">
 
-    <!-- Form Input -->
-    <div class="form-input">
+            <!-- Edit -->
+            <?php if ($editData) { ?>
+                <h2 style="text-align : center;">Edit Data</h2>
+                <form method="post" action="armada.php">
+                    <input type="hidden" name="id_armada" value="<?= $editData['id_armada']; ?>">
 
-        <!-- Edit -->
-        <?php if ($editData) { ?>
-            <h2 style="text-align : center;">Edit Data</h2>
-            <form method="post" action="armada.php">
-                <input type="hidden" name="id_armada" value="<?= $editData['id_armada']; ?>">
+                    <label for="nama">Nama Armada :</label>
+                    <input type="text" name="nama" id="nama" value="<?= $editData['nama_armada'] ?>" required><br><br>
 
-                <label for="nama">Nama Armada :</label>
-                <input type="text" name="nama" id="nama" value="<?= $editData['nama_armada'] ?>" required><br><br>
+                    <label for="plat">Plat :</label>
+                    <input type="text" name="plat" id="plat" required value="<?= $editData['plat'] ?>"><br><br>
 
-                <label for="plat">Plat :</label>
-                <input type="text" name="plat" id="plat" required value="<?= $editData['plat'] ?>"><br><br>
+                    <label for="status">Status :</label>
+                    <input type="text" name="status" id="status" required value="<?= $editData['status'] ?>"><br><br>
 
-                <label for="status">Status :</label>
-                <input type="text" name="status" id="status" required value="<?= $editData['status'] ?>"><br><br>
+                    <input type="submit" name="edit" value="Update data"> |
+                    <a href="armada.php">Batal</a>
+                </form>
 
-                <input type="submit" name="edit" value="Update data"> |
-                <a href="armada.php">Batal</a>
-            </form>
+            <?php } else {  ?>
+                <!-- Input -->
+                <form method="post">
+                    <h2 style="text-align : center;">Tambah Data</h2>
 
-        <?php } else {  ?>
-            <!-- Input -->
-            <form method="post">
-                <h2 style="text-align : center;">Tambah Data</h2>
+                    <label for="nama">Nama Armada :</label>
+                    <input type="text" name="nama" id="nama" required><br><br>
 
-                <label for="nama">Nama Armada :</label>
-                <input type="text" name="nama" id="nama" required><br><br>
+                    <label for="plat">Plat :</label>
+                    <input type="text" name="plat" id="plat" required><br><br>
 
-                <label for="plat">Plat :</label>
-                <input type="text" name="plat" id="plat" required><br><br>
+                    <label for="status">Status :</label>
+                    <input type="text" name="status" id="status" required><br><br>
 
-                <label for="status">Status :</label>
-                <input type="text" name="status" id="status" required><br><br>
+                    <input type="submit" name="simpan" value="Simpan">
 
-                <input type="submit" name="simpan" value="Simpan">
+                </form>
+            <?php } ?>
+        </div>
 
-            </form>
-        <?php } ?>
+        <!-- Tampilkan Data -->
+        <table>
+            <tr>
+                <th>No</th>
+                <th>Nama Armada</th>
+                <th>Plat</th>
+                <th>Status</th>
+                <th>Aksi</th>
+            </tr>
+
+            <?php
+            $no = 1;;
+            foreach ($armada->tampil() as $data) {
+            ?>
+                <tr>
+                    <td><?php echo $no++; ?></td>
+                    <td><?php echo $data['nama_armada']; ?></td>
+                    <td><?php echo $data['plat']; ?></td>
+                    <td><?php echo $data['status']; ?></td>
+                    <td>
+                        <a href="?edit=<?php echo $data['id_armada']; ?>">Edit</a> |
+                        <a href="?hapus=<?php echo $data['id_armada']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
+                    </td>
+                </tr>
+            <?php } ?>
+        </table>
     </div>
 
-    <!-- Tampilkan Data -->
-    <table>
-        <tr>
-            <th>No</th>
-            <th>Nama Armada</th>
-            <th>Plat</th>
-            <th>Status</th>
-            <th>Aksi</th>
-        </tr>
-
-        <?php
-        $no = 1;;
-        foreach ($armada->tampil() as $data) {
-        ?>
-            <tr>
-                <td><?php echo $no++; ?></td>
-                <td><?php echo $data['nama_armada']; ?></td>
-                <td><?php echo $data['plat']; ?></td>
-                <td><?php echo $data['status']; ?></td>
-                <td>
-                    <a href="?edit=<?php echo $data['id_armada']; ?>">Edit</a> |
-                    <a href="?hapus=<?php echo $data['id_armada']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                </td>
-            </tr>
-        <?php } ?>
-    </table>
 </body>
 
 </html>

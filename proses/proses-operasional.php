@@ -44,4 +44,19 @@ class operasional
         $sql = "DELETE FROM operasional WHERE id_operasional = '$id_operasional'";
         return mysqli_query($this->db, $sql);
     }
+
+
+    function laporan_pemasukan($pemasukan)
+    {
+        $sql = "SELECT * from operasional where jenis='$pemasukan'";
+        return mysqli_query($this->db, $sql);
+    }
+
+    function laporan_pengeluaran($pengeluaran)
+    {
+        $sql = "SELECT * FROM operasional where jenis = '$pengeluaran'";
+        return mysqli_query($this->db, $sql);
+    }
+
+    function laporan_bulanan() {}
 }

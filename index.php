@@ -5,6 +5,12 @@ require_once(__DIR__ . '\proses\proses-relawan.php');
 require_once(__DIR__ . '\proses\proses-armada.php');
 require_once(__DIR__ . '\proses\proses-pasien.php');
 
+
+// session_start();
+// if (isset(['login'])) {
+
+// }
+
 $pelayanan = new pelayanan();
 $pasien = new pasien();
 // $dataPasien = [];
@@ -103,6 +109,7 @@ $db = new database();
             <!-- Tabel pelayanan -->
             <div class="mt-4">
                 <h2 class="m-5 text-center">Histori Pelayanan</h2>
+                
                 <table class="table">
                     <thead>
                         <tr>
@@ -115,7 +122,7 @@ $db = new database();
                             <th>Ke lokasi</th>
                             <th>Jenis pelayanan</th>
                             <th>Keterangan</th>
-                            <th>Aksi</th>
+                            <!-- <th>Aksi</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -133,10 +140,7 @@ $db = new database();
                                 <td><?php echo $data['ke_lokasi']; ?></td>
                                 <td><?php echo $data['jenis_pelayanan']; ?></td>
                                 <td><?php echo $data['keterangan']; ?></td>
-                                <td>
-                                    <a href="?edit=<?php echo $data['id_pelayanan']; ?>">Edit</a> |
-                                    <a href="?hapus=<?php echo $data['id_pelayanan']; ?> " onclick="return confirm('Yakin hapus data?')">Hapus</a>
-                                </td>
+
                             </tr>
                         <?php } ?>
                     </tbody>
