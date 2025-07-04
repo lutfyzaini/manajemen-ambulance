@@ -21,6 +21,10 @@ if (isset($_POST['edit'])) {
     exit;
 }
 
+// if (isset($_POST['cari'])) {
+//     $operasional->cari_pemasukan($_POST['jenis_pemasukan']);
+// }
+
 if (isset($_GET['hapus'])) {
     $operasional->hapus($_GET['hapus']);
     header('location:operasional.php');
@@ -35,7 +39,8 @@ if (isset($_GET['hapus'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Operasional</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
 </head>
 
 <body>
@@ -144,11 +149,11 @@ if (isset($_GET['hapus'])) {
             </div>
         </div>
         <div class="card">
-            <div class="card-header text-white bg-secondary">Data Operasional</div>
+            <div class="card-header text-white bg-secondary">Data Operasional</div><br>
 
             <!-- Tampilkan Data -->
             <div class="card-body">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="tableOperasional">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
@@ -168,7 +173,7 @@ if (isset($_GET['hapus'])) {
                             <td><?php echo $data['tanggal'] ?></td>
                             <td><?php echo $data['keterangan'] ?></td>
                             <td><?php echo $data['jenis'] ?></td>
-                            <td><?php echo $data['nominal'] ?></td>
+                            <td>Rp. <?php echo number_format($data['nominal'], 0, ',', '.') ?></td>
                             <td>
                                 <a href="?edit=<?php echo $data['id_operasional'] ?>" class="btn btn-sm btn-warning">Edit</a> |
                                 <a href="?hapus=<?php echo $data['id_operasional'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Yakin hapus data?')">Hapus</a>
@@ -179,6 +184,14 @@ if (isset($_GET['hapus'])) {
             </div>
         </div>
     </div>
+
+    <?php
+    include 'datatable/table.php';
+    ?>
+    <script>
+        new DataTable('#tableOperasional');
+    </script>
+
 </body>
 
 </html>

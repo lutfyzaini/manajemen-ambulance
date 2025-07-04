@@ -16,6 +16,10 @@ class operasional
         // $sql = "SELECT * FROM operasional";
         return mysqli_fetch_all($sql, MYSQLI_ASSOC);
     }
+    
+    function filter($jenis, $bulan){
+        
+    }
 
     function cari($id)
     {
@@ -46,17 +50,17 @@ class operasional
     }
 
 
-    function laporan_pemasukan($pemasukan)
+    function cari_pemasukan($keyword)
     {
-        $sql = "SELECT * from operasional where jenis='$pemasukan'";
+        $sql = "SELECT * from operasional where jenis like '%$keyword%' or nama like '%$keyword%' order by id_operasional desc";
         return mysqli_query($this->db, $sql);
     }
 
-    function laporan_pengeluaran($pengeluaran)
-    {
-        $sql = "SELECT * FROM operasional where jenis = '$pengeluaran'";
-        return mysqli_query($this->db, $sql);
-    }
+    // function cari_pengeluaran($pengeluaran)
+    // {
+    //     $sql = "SELECT * FROM operasional where jenis = '$pengeluaran'";
+    //     return mysqli_query($this->db, $sql);
+    // }
 
-    function laporan_bulanan() {}
+    // function laporan_bulanan() {}
 }

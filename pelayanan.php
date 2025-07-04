@@ -39,7 +39,8 @@ if (isset($_GET['hapus'])) {
 
 <head>
     <title>Data Pelayanan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
 </head>
 
 <body>
@@ -228,7 +229,7 @@ if (isset($_GET['hapus'])) {
             <div class="card-header text-white bg-secondary">Data Pelayanan</div>
             <!-- Tampilkan Data -->
             <div class="card-body">
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="tablePelayanan">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
@@ -267,6 +268,14 @@ if (isset($_GET['hapus'])) {
             </div>
         </div>
     </div>
-</body>
+
+    <?php
+    include 'datatable/table.php';
+    ?>
+
+    <script>
+        new DataTable('#tablePelayanan');
+    </script>
+
 
 </html>

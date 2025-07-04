@@ -32,8 +32,8 @@ if (isset($_GET['hapus'])) {
 
 <head>
     <title>Data Pasien</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
 
 <body>
 
@@ -96,7 +96,7 @@ if (isset($_GET['hapus'])) {
                             <div class="mb-3 row">
                                 <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
                                 <div class="col-sm-10">
-                                    <input type="number" name="no_hp" id="no_hp" class="form-control" required value="<?= $editData['no_hp'] ?>">
+                                    <input type="text" name="no_hp" id="no_hp" class="form-control" required value="<?= $editData['no_hp'] ?>">
                                 </div>
                             </div>
 
@@ -153,7 +153,7 @@ if (isset($_GET['hapus'])) {
                             <div class="mb-3 row">
                                 <label for="no_hp" class="col-sm-2 col-form-label">No. HP</label>
                                 <div class="col-sm-10">
-                                    <input type="number" name="no_hp" id="no_hp" class="form-control" required>
+                                    <input type="text" name="no_hp" id="no_hp" class="form-control" required>
                                 </div>
                             </div>
 
@@ -176,7 +176,7 @@ if (isset($_GET['hapus'])) {
             <!-- Tampilkan Data -->
             <div class="card-body">
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" id="tablePasien">
                     <thead class="table-dark">
                         <tr>
                             <th>No</th>
@@ -212,6 +212,15 @@ if (isset($_GET['hapus'])) {
             </div>
         </div>
     </div>
+
+    <?php
+    include 'datatable/table.php';
+    ?>
+
+    <script>
+        new DataTable('#tablePasien')
+    </script>
+
 </body>
 
 </html>
