@@ -50,6 +50,8 @@ $db = new database();
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
             <h3 class="navbar-brand">AMBULANCE RJS - Dashboard</h3>
+            <a href="logout.php" class="btn btn-danger">Logout</a>
+
             <!-- <a class="navbar-brand" href="index.php">Kembali</a> -->
         </div>
     </nav>
@@ -136,15 +138,8 @@ $db = new database();
                         <tbody>
                             <?php
                             $no = 1;
-                            $dataPelayanan = $pelayanan->tampil();
-                            // Urutkan dari yang terbaru berdasarkan tanggal
-                            usort($dataPelayanan, function ($a, $b) {
-                                return strtotime($b['tanggal']) - strtotime($a['tanggal']);
-                            });
-                            // Ambil 5 data teratas
-                            $dataTerbatas = array_slice($dataPelayanan, 0, 5);
 
-                            foreach ($dataTerbatas as $data) {
+                            foreach ($pelayanan->tampil() as $data) {
                             ?>
                                 <tr>
                                     <td><?php echo $no++; ?></td>

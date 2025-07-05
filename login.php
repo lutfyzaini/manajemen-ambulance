@@ -27,7 +27,7 @@ if (isset($_POST['login'])) {
 <html>
 
 <head>
-    <title>Login - Sistem Ambulance</title>
+    <title>Login - Ambulance</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -35,7 +35,7 @@ if (isset($_POST['login'])) {
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-4">
-                <h4 class="text-center mb-4">Login Sistem Ambulance</h4>
+                <h4 class="text-center mb-4">Login Ambulance</h4>
                 <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
                 <form method="post">
                     <div class="mb-3">

@@ -1,4 +1,8 @@
 <?php
+require_once(__DIR__ . '/proses/proses-pelayanan.php');
+require_once(__DIR__ . '/proses/proses-relawan.php');
+require_once(__DIR__ . '/proses/proses-armada.php');
+require_once(__DIR__ . '/proses/proses-pasien.php');
 
 session_start();
 if (!isset($_SESSION['username'])) {
