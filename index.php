@@ -1,5 +1,11 @@
 <?php
 include 'config/koneksi.php';
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
 require_once(__DIR__ . '\proses\proses-pelayanan.php');
 require_once(__DIR__ . '\proses\proses-relawan.php');
 require_once(__DIR__ . '\proses\proses-armada.php');
@@ -7,10 +13,6 @@ require_once(__DIR__ . '\proses\proses-pasien.php');
 require_once(__DIR__ . '\proses\proses-operasional.php');
 
 
-// session_start();
-// if (isset(['login'])) {
-
-// }
 
 $pelayanan = new pelayanan();
 $pasien = new pasien();

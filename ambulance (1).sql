@@ -179,7 +179,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id_user`, `username`, `password`) VALUES
-(1, 'admin', '$2y$10$TnEihypdTYbmW0QXr7dU9euKuTvofS5mNGwI1FLsD7Y/UmtzvOIHu');
+(1, 'admin', 'admin123');
 
 --
 -- Indexes for dumped tables

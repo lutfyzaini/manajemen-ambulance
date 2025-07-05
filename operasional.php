@@ -1,6 +1,12 @@
 <?php
 require_once(__DIR__ . '/proses/proses-operasional.php');
 
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $operasional = new Operasional();
 
 if (isset($_POST['simpan'])) {

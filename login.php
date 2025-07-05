@@ -1,25 +1,24 @@
 <?php
 session_start();
-include 'config/koneksi.php';
+require_once 'config/koneksi.php';
 
-$db = new database();
-$conn = $db->connect;
-
-$error = "";
+$database = new database();
+$db = $database->connect;
 
 if (isset($_POST['login'])) {
-    $user = $_POST['username'];
-    $pass = $_POST['password'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    $query = "SELECT * FROM user WHERE username='$user' AND password='$pass'";
-    $result = mysqli_query($conn, $query);
+    $query = mysqli_query($db, "SELECT * FROM user WHERE username='$username' AND password='$password'");
+    $data = mysqli_fetch_assoc($query);
 
-    if (mysqli_num_rows($result) > 0) {
-        $_SESSION['login'] = true;
-        $_SESSION['username'] = $user;
+    if ($data) {
+        $_SESSION['username'] = $data['username'];
+        // $_SESSION['password'] = $data['password'];
         header("Location: index.php");
+        exit;
     } else {
-        $error = "Username atau Password salah!";
+        $error = "Username atau password salah!";
     }
 }
 ?>
@@ -28,28 +27,26 @@ if (isset($_POST['login'])) {
 <html>
 
 <head>
-    <title>Login</title>
+    <title>Login - Sistem Ambulance</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<body>
-    <div class="container mt-5 col-md-4">
-        <div class="card">
-            <div class="card-header text-center">
-                <h3>Login</h3>
-            </div>
-            <div class="card-body">
-                <?php if ($error) echo "<div class='alert alert-danger'>$error</div>"; ?>
-                <form method="POST">
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <h4 class="text-center mb-4">Login Sistem Ambulance</h4>
+                <?php if (isset($error)) echo "<div class='alert alert-danger'>$error</div>"; ?>
+                <form method="post">
                     <div class="mb-3">
-                        <label>Username</label>
+                        <label>Username:</label>
                         <input type="text" name="username" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Password</label>
+                        <label>Password:</label>
                         <input type="password" name="password" class="form-control" required>
                     </div>
-                    <button name="login" class="btn btn-primary w-100">Masuk</button>
+                    <button class="btn btn-primary w-100" name="login">Login</button>
                 </form>
             </div>
         </div>

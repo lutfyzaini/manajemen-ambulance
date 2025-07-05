@@ -1,5 +1,11 @@
 <?php
 require_once(__DIR__ . '/proses/proses-relawan.php');
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $relawan = new Relawan();
 
 if (isset($_POST['simpan'])) {

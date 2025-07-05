@@ -16,10 +16,6 @@ class operasional
         // $sql = "SELECT * FROM operasional";
         return mysqli_fetch_all($sql, MYSQLI_ASSOC);
     }
-    
-    function filter($jenis, $bulan){
-        
-    }
 
     function cari($id)
     {
@@ -49,12 +45,6 @@ class operasional
         return mysqli_query($this->db, $sql);
     }
 
-
-    function cari_pemasukan($keyword)
-    {
-        $sql = "SELECT * from operasional where jenis like '%$keyword%' or nama like '%$keyword%' order by id_operasional desc";
-        return mysqli_query($this->db, $sql);
-    }
 
     // function cari_pengeluaran($pengeluaran)
     // {

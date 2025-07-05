@@ -1,5 +1,13 @@
 <?php
 require_once __DIR__ . '/proses/proses-armada.php';
+
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
+
+
 $armada = new Armada();
 
 if (isset($_POST['simpan'])) {
@@ -25,6 +33,7 @@ if (isset($_GET['hapus'])) {
     header("location:armada.php");
     exit;
 }
+
 ?>
 
 <!DOCTYPE html>

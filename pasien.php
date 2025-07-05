@@ -1,6 +1,12 @@
 <?php
 require_once(__DIR__ . '/proses/proses-pasien.php');
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
 $pasien = new Pasien();
+
 
 if (isset($_POST['simpan'])) {
     $pasien->tambah($_POST['nama'], $_POST['jenis_kelamin'], $_POST['umur'], $_POST['alamat'], $_POST['no_hp'], $_POST['diagnosa']);
