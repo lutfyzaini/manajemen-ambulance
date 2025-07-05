@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/proses/proses-pasien.php');
+require_once(__DIR__ . '/../proses/proses-pasien.php');
 session_start();
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
@@ -31,15 +31,9 @@ if (isset($_GET['hapus'])) {
     header("location:pasien.php");
     exit;
 }
+
+include '../template/header.php';
 ?>
-
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Data Pasien</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
 
 <body>
 
@@ -47,7 +41,7 @@ if (isset($_GET['hapus'])) {
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
             <h3 class="navbar-brand">AMBULANCE RJS - Pasien</h3>
-            <a class="navbar-brand" href="index.php">Kembali</a>
+            <a class="navbar-brand" href="../index.php">Kembali</a>
         </div>
     </nav>
 
@@ -220,7 +214,7 @@ if (isset($_GET['hapus'])) {
     </div>
 
     <?php
-    include 'datatable/table.php';
+    include '../template/footer.php';
     ?>
 
     <script>

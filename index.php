@@ -34,16 +34,10 @@ $operasional = new operasional();
 $db = new database();
 // $pelayanan = new pelayanan();
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Ambulance RJS</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
-</head>
+<?php
+include 'template/header.php';
+?>
 
 <body>
     <!-- Navbar -->
@@ -67,7 +61,7 @@ $db = new database();
                 <div class="card bg-primary-subtle">
                     <div class="card-body text-center ">
                         <h5 class="card-title">Data Pasien</h5>
-                        <a href="pasien.php" class="btn btn-info">Lihat</a>
+                        <a href="view/pasien.php" class="btn btn-info">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -77,7 +71,7 @@ $db = new database();
                 <div class="card bg-info-subtle">
                     <div class="card-body text-center">
                         <h5 class="card-title">Data Relawan</h5>
-                        <a href="relawan.php" class="btn btn-info">Lihat</a>
+                        <a href="view/relawan.php" class="btn btn-info">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -87,7 +81,7 @@ $db = new database();
                 <div class="card bg-secondary-subtle">
                     <div class="card-body text-center">
                         <h5 class="card-title">Data Armada</h5>
-                        <a href="armada.php" class="btn btn-info ">Lihat</a>
+                        <a href="view/armada.php" class="btn btn-info ">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -97,7 +91,7 @@ $db = new database();
                 <div class="card bg-warning-subtle">
                     <div class="card-body text-center">
                         <h5 class="card-title">Data Pelayanan</h5>
-                        <a href="pelayanan.php" class="btn btn-info ">Lihat</a>
+                        <a href="view/pelayanan.php" class="btn btn-info ">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -107,7 +101,7 @@ $db = new database();
                 <div class="card bg-danger-subtle">
                     <div class="card-body text-center">
                         <h5 class="card-title">Data Operasional</h5>
-                        <a href="operasional.php" class="btn btn-info">Lihat</a>
+                        <a href="view/operasional.php" class="btn btn-info">Lihat</a>
                     </div>
                 </div>
             </div>
@@ -192,11 +186,8 @@ $db = new database();
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
-    </script>
     <?php
-    include 'datatable/table.php';
+    include 'template/footer.php';
     ?>
     <script>
         new DataTable('#tableHistory');

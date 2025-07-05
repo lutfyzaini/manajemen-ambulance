@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/proses/proses-operasional.php');
+require_once(__DIR__ . '/../proses/proses-operasional.php');
 
 session_start();
 if (!isset($_SESSION['username'])) {
@@ -36,25 +36,16 @@ if (isset($_GET['hapus'])) {
     header('location:operasional.php');
     exit;
 }
+
+include '../template/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Operasional</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.3/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.bootstrap5.css">
-</head>
 
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container">
             <h3 class="navbar-brand">AMBULANCE RJS - Data Operasional</h3>
-            <a class="navbar-brand" href="index.php">Kembali</a>
+            <a class="navbar-brand" href="../index.php">Kembali</a>
         </div>
     </nav>
 
@@ -192,7 +183,7 @@ if (isset($_GET['hapus'])) {
     </div>
 
     <?php
-    include 'datatable/table.php';
+    include '../template/footer.php';
     ?>
     <script>
         new DataTable('#tableOperasional');
