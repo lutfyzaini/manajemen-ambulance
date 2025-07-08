@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 04, 2025 at 07:07 PM
+-- Generation Time: Jul 08, 2025 at 05:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -39,7 +39,7 @@ CREATE TABLE `armada` (
 --
 
 INSERT INTO `armada` (`id_armada`, `nama_armada`, `plat`, `status`) VALUES
-(2, 'APV', 'AD 4545df CD', 'Aktif'),
+(2, 'APV', 'AD 4545 CD', 'Aktif'),
 (3, 'LUXIO ', 'AD 23223 S', 'Aktif');
 
 -- --------------------------------------------------------
@@ -65,7 +65,6 @@ INSERT INTO `operasional` (`id_operasional`, `tanggal`, `keterangan`, `jenis`, `
 (2, '2022-01-31', 'Donasi Sapi Tumpak', 'Pemasukan', '8815000'),
 (3, '2022-01-01', 'NN ', 'Pemasukan', '50000'),
 (4, '2022-03-01', 'Kotak Infaq', 'Pemasukan', '1429000'),
-(5, '2022-03-01', 'Kotak Infaq', 'Pemasukan', '1200000'),
 (6, '2022-08-01', 'Jimpitan Relawan', 'Pemasukan', '830000'),
 (7, '2022-03-01', 'BBM', 'Pengeluaran', '3278000'),
 (8, '2022-02-01', 'Perawatan', 'Pengeluaran', '9705000'),
@@ -94,7 +93,7 @@ CREATE TABLE `pasien` (
 
 INSERT INTO `pasien` (`id_pasien`, `nama_pasien`, `jenis_kelamin`, `umur`, `alamat`, `no_hp`, `diagnosa`) VALUES
 (1, 'Usman S', 'Laki-laki', '35', 'Besuki RT 02 RW 03, Tanduk', '08643242413', 'Gagal Ginjal Kronis, Stadium 5, DM2'),
-(8, 'Lutfy Zaini Al Fathoni', 'Laki-laki', '19', 'Rejosari A', '086523231231', 'Dislokasi tulang bahu'),
+(8, 'Lutfy Zaini Al Fathonid', 'Laki-laki', '19', 'Rejosari A', '086523231231', 'Dislokasi tulang bahu'),
 (9, 'Karimah', 'Perempuan', '0', 'Sengon', '0858323123123', '-'),
 (10, 'Toin', 'Laki-laki', '0', 'Rejosari B', '0', '-'),
 (11, 'Narmi', 'Perempuan', '0', 'Sambirejo', '0', '-'),
@@ -244,7 +243,7 @@ ALTER TABLE `operasional`
 -- AUTO_INCREMENT for table `pasien`
 --
 ALTER TABLE `pasien`
-  MODIFY `id_pasien` int(55) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_pasien` int(55) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `pelayanan`
